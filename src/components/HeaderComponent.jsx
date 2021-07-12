@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import AuthenticationService from "../api/AuthenticationService";
 class HeaderComponent extends Component {
+  constructor() {
+    super();
+    this.state = {};
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+  handleLogout() {
+    AuthenticationService.logout();
+  }
   render() {
     return (
       <div className="header no-gutters">
@@ -20,7 +29,7 @@ class HeaderComponent extends Component {
             <li>
               <button
                 type="button"
-                class="btn btn-dark nav-link"
+                className="btn btn-dark nav-link"
                 data-toggle="modal"
                 data-target="#contactModel"
               >
@@ -30,9 +39,9 @@ class HeaderComponent extends Component {
             <li>
               <button
                 type="button"
-                class="btn btn-dark nav-link"
+                className="btn btn-dark nav-link"
                 data-toggle="modal"
-                data-target="#FeedbackModel"
+                data-target="#feedbackModel"
               >
                 Feedback
               </button>
@@ -40,7 +49,7 @@ class HeaderComponent extends Component {
             <li>
               <button
                 type="button"
-                class="btn btn-dark nav-link"
+                className="btn btn-dark nav-link"
                 data-toggle="modal"
                 data-target="#courseModel"
               >
@@ -55,6 +64,15 @@ class HeaderComponent extends Component {
             <li>
               <Link className="nav-link" to="/adminlogin">
                 Admin
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="btn btn-dark nav-link"
+                onClick={this.handleLogout}
+                to={{ pathname: "/", state: { message: "logout success" } }}
+              >
+                Logout
               </Link>
             </li>
           </ul>
