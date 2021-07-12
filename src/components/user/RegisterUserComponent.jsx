@@ -72,7 +72,7 @@ class RegisterUserComponent extends Component {
               {({ errors, touched, validateField, validateForm }) => (
                 <Form>
                   <div className="form-row mt-5">
-                    <div className="form-group col-md-6">
+                    {/*<div className="form-group col-md-6">
                       <label htmlFor="inputUserId">UserId*</label>
                       <Field
                         type="number"
@@ -85,9 +85,9 @@ class RegisterUserComponent extends Component {
                       {errors.userId && (
                         <div className="text-danger">{errors.userId}</div>
                       )}
-                    </div>
+                      </div>*/}
                     <div className="form-group col-md-6">
-                      <label htmlFor="inputUserName">User Name*</label>
+                      <label htmlFor="inputUserName">Name*</label>
                       <Field
                         type="text"
                         className="form-control"

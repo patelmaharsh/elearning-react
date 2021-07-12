@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import CourseDataService from "../../api/CourseDataService";
 import UserDataService from "../../api/UserDataService.js";
 import { Field, Form, Formik } from "formik";
+import ContactDataService from "../../api/ContactDataService";
+import FeedbackDataService from "../../api/FeedbackDataService";
+import { MessageComponent } from "../ExtraComponents";
 function validateValue(value) {
   let error;
   if (!value) {
@@ -36,14 +39,24 @@ class AdminComponent extends Component {
         courses: response.data,
       });
     });
+    ContactDataService.getAllContact().then((response) => {
+      this.setState({
+        contacts: response.data,
+      });
+    });
+    FeedbackDataService.getAllFeedback().then((response) => {
+      this.setState({
+        feedbacks: response.data,
+      });
+    });
   }
   onSubmitCourseForm(values) {
     let course = {};
-    course.courseId = this.state.courseId;
-    course.cName = this.state.cName;
-    course.cDesc = this.state.cDesc;
-    course.cFees = this.state.cFees;
-    course.cResource = this.state.cResource;
+    // course.courseId = values.courseId;
+    course.cName = values.cName;
+    course.cDesc = values.cDesc;
+    course.cFees = values.cFees;
+    course.cResource = values.cResource;
     CourseDataService.postCourse(course).then((response) => {
       window.location.reload();
     });
@@ -54,21 +67,82 @@ class AdminComponent extends Component {
     let cDesc = this.state.cDesc;
     let cFees = this.state.cFees;
     let cResource = this.state.cResource;
-    console.log(this.state.courses);
+    // console.log(this.state.courses);
     return (
       <div>
         <h4>Admin Component</h4>
-        <div className="container">
-          <div className="row container">
-            <div className="col-md-6">
-              <h5>Users</h5>
+
+        <div className="container mt-4">
+          <ul className="nav nav-tabs" id="myTab" role="tablist">
+            <li className="nav-item">
+              <a
+                className="nav-link active"
+                id="user-tab"
+                data-toggle="tab"
+                href="#user"
+                role="tab"
+                aria-controls="user"
+                aria-selected="true"
+              >
+                Users
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="courses-tab"
+                data-toggle="tab"
+                href="#courses"
+                role="tab"
+                aria-controls="courses"
+                aria-selected="false"
+              >
+                Courses
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="contact-tab"
+                data-toggle="tab"
+                href="#contact"
+                role="tab"
+                aria-controls="contact"
+                aria-selected="false"
+              >
+                Contacts
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="feedback-tab"
+                data-toggle="tab"
+                href="#feedback"
+                role="tab"
+                aria-controls="feedback"
+                aria-selected="false"
+              >
+                Feedbacks
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div className="tab-content" id="myTabContent">
+          <div
+            className="tab-pane fade show active"
+            id="user"
+            role="tabpanel"
+            aria-labelledby="user-tab"
+          >
+            <div className="container mt-4">
               <table className="table table-striped">
                 <thead>
                   <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone No</th>
-                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -77,16 +151,19 @@ class AdminComponent extends Component {
                       <td>{user.name}</td>
                       <td>{user.email}</td>
                       <td>{user.phoneNo}</td>
-                      <td>
-                        <button className="btn btn-warning">Update</button>
-                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <div className="col-md-6">
-              <h5>Courses</h5>
+          </div>
+          <div
+            className="tab-pane fade"
+            id="courses"
+            role="tabpanel"
+            aria-labelledby="courses-tab"
+          >
+            <div className="container mt-4">
               <table className="table table-striped">
                 <thead>
                   <tr>
@@ -109,32 +186,90 @@ class AdminComponent extends Component {
               </table>
             </div>
           </div>
+          <div
+            className="tab-pane fade"
+            id="contact"
+            role="tabpanel"
+            aria-labelledby="contact-tab"
+          >
+            <div className="container mt-4">
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">ContactId</th>
+                    <th scope="col">UserId</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Message</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.contacts.map((contact) => (
+                    <tr key={contact.contactId}>
+                      <td>{contact.contactId}</td>
+                      <td>{contact.userId}</td>
+                      <td>{contact.name}</td>
+                      <td>{contact.message}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            className="tab-pane fade"
+            id="feedback"
+            role="tabpanel"
+            aria-labelledby="feedback-tab"
+          >
+            <div className="container mt-4">
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">FeedbackId</th>
+                    <th scope="col">UserId</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Feedback</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.feedbacks.map((feedback) => (
+                    <tr key={feedback.fId}>
+                      <td>{feedback.fId}</td>
+                      <td>{feedback.userId}</td>
+                      <td>{feedback.name}</td>
+                      <td>{feedback.feedback}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         <div
-          class="modal fade"
+          className="modal fade"
           id="courseModel"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalCenterTitle"
           aria-hidden="true"
         >
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLongTitle">
                   Add Course
                 </h5>
                 <button
                   type="button"
-                  class="close"
+                  className="close"
                   data-dismiss="modal"
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 <div>
                   <div className="container text-left">
                     <Formik
@@ -153,7 +288,7 @@ class AdminComponent extends Component {
                       {({ errors, touched, validateField, validateForm }) => (
                         <Form>
                           <div className="form-row mt-5">
-                            <div className="form-group col-md-6">
+                            {/*<div className="form-group col-md-6">
                               <label htmlFor="inputCourseId">CourseId*</label>
                               <Field
                                 type="number"
@@ -168,7 +303,7 @@ class AdminComponent extends Component {
                                   {errors.courseId}
                                 </div>
                               )}
-                            </div>
+                              </div>*/}
                             <div className="form-group col-md-6">
                               <label htmlFor="inputCourseName">
                                 Course Name*
@@ -235,10 +370,10 @@ class AdminComponent extends Component {
                   </div>
                 </div>
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-dismiss="modal"
                 >
                   Close

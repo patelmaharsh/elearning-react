@@ -1,14 +1,29 @@
 .App {
   text-align: center;
 }
+.extra-header-space {
+  height: 70px;
+}
 .footer {
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 40px;
   text-align: center;
+  z-index: 10;
+}
+.extra-footer-space {
+  height: 50px;
 }
 .span-center {
   color: rgb(209, 209, 209);
   margin: auto;
+}
+.login-form {
+  margin: auto;
+}
+.header {
+  position: fixed;
+  width: 100%;
+  z-index: 100;
 }

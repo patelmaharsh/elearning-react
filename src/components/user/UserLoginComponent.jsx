@@ -32,6 +32,7 @@ class UserLoginComponent extends Component {
             pathname: `/user/${response.data.userId}`,
             state: { message: "Login SUccess!" },
           });
+          window.location.reload();
         } else {
           this.setState({
             message: "Invalid Credentials",
@@ -39,7 +40,7 @@ class UserLoginComponent extends Component {
         }
       } else {
         this.setState({
-          message: "Invalid Email",
+          message: "User not found",
         });
       }
     });
@@ -50,8 +51,13 @@ class UserLoginComponent extends Component {
     return (
       <div>
         <h4>User Login</h4>
+        {this.state.message && (
+          <div class="alert alert-warning" role="alert">
+            {this.state.message}
+          </div>
+        )}
         <div className="container ">
-          <div className="row text-left center ">
+          <div className="row text-left center">
             <Formik
               initialValues={{
                 email,
@@ -63,8 +69,8 @@ class UserLoginComponent extends Component {
               enableReinitialize={true}
             >
               {({ errors, touched, validateField, validateForm }) => (
-                <Form>
-                  <div className="row mt-5">
+                <Form className=" w-50 login-form">
+                  <div className="row mt-2">
                     <div className="col-md-12">
                       <label htmlFor="inputEmail">Email</label>
                       <Field

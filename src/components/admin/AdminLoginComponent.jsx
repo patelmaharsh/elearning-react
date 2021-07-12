@@ -32,6 +32,7 @@ class AdminLoginComponent extends Component {
             pathname: `/admin`,
             state: { message: "Login SUccess!" },
           });
+          window.location.reload();
         } else {
           this.setState({
             message: "Invalid Credentials",
@@ -39,7 +40,7 @@ class AdminLoginComponent extends Component {
         }
       } else {
         this.setState({
-          message: "Invalid Email",
+          message: "Admin not found!",
         });
       }
     });
@@ -50,6 +51,11 @@ class AdminLoginComponent extends Component {
     return (
       <div>
         <h4>Admin Login</h4>
+        {this.state.message && (
+          <div class="alert alert-warning" role="alert">
+            {this.state.message}
+          </div>
+        )}
         <div className="container ">
           <div className="row text-left center ">
             <Formik
@@ -63,8 +69,8 @@ class AdminLoginComponent extends Component {
               enableReinitialize={true}
             >
               {({ errors, touched, validateField, validateForm }) => (
-                <Form>
-                  <div className="row mt-5">
+                <Form className="w-50 login-form">
+                  <div className="row mt-2">
                     <div className="col-md-12">
                       <label htmlFor="inputEmail">Email</label>
                       <Field

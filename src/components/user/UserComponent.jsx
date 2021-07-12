@@ -3,13 +3,14 @@ import { Field, Form, Formik } from "formik";
 import ContactDataService from "../../api/ContactDataService";
 import FeedbackDataService from "../../api/FeedbackDataService";
 import UserDataService from "../../api/UserDataService";
-function validateValue(value) {
-  let error;
-  if (!value) {
-    error = "Required";
-  }
-  return error;
-}
+import { MessageComponent } from "../ExtraComponents";
+// function validateValue(value) {
+//   let error;
+//   if (!value) {
+//     error = "Required";
+//   }
+//   return error;
+// }
 class UserComponent extends Component {
   constructor() {
     super();
@@ -29,11 +30,12 @@ class UserComponent extends Component {
   componentDidMount() {
     UserDataService.getUserByEmail(sessionStorage.getItem("userEmail")).then(
       (response) => {
-        console.log(response);
+        // console.log(response);
         this.setState({
           userId: response.data.userId,
           name: response.data.name,
           phoneNo: response.data.phoneNo,
+          email: response.data.email,
         });
       }
     );
@@ -51,6 +53,7 @@ class UserComponent extends Component {
         pathname: `/user/${values.userId}`,
         state: { message: "Message Sent Successfully" },
       });
+      window.location.reload();
     });
   }
   handleSubmitFeedbackForm(values) {
@@ -65,6 +68,7 @@ class UserComponent extends Component {
         pathname: `/user/${feedback.userId}`,
         state: { message: "Feedback Sent Successfully" },
       });
+      window.location.reload();
     });
   }
   render() {
@@ -78,6 +82,7 @@ class UserComponent extends Component {
     return (
       <div>
         <h4>User Component</h4>
+
         <div className="container"></div>
         {/* Contact Model  */}
         <div
@@ -122,7 +127,7 @@ class UserComponent extends Component {
                       {({ errors, touched, validateField, validateForm }) => (
                         <Form>
                           <div className="form-row mt-5">
-                            <div className="form-group col-md-6">
+                            {/*<div className="form-group col-md-6">
                               <label htmlFor="inputContactId">ContactId*</label>
                               <Field
                                 type="number"
@@ -137,14 +142,14 @@ class UserComponent extends Component {
                                   {errors.contactId}
                                 </div>
                               )}
-                            </div>
+                              </div>*/}
                             <div className="form-group col-md-6">
                               <label htmlFor="inputUserId">UserId</label>
                               <Field
                                 type="number"
                                 className="form-control"
                                 id="inputUserId"
-                                name="iserId"
+                                name="userId"
                                 disabled
                               />
                             </div>
@@ -184,7 +189,7 @@ class UserComponent extends Component {
                             </div>
                           </div>
                           <button type="submit" className="btn btn-primary">
-                            Save
+                            Contact
                           </button>
                         </Form>
                       )}
@@ -239,7 +244,7 @@ class UserComponent extends Component {
                         email,
                         feedback,
                       }}
-                      onSubmit={this.handleSubmitContactForm}
+                      onSubmit={this.handleSubmitFeedbackForm}
                       validateOnBlur={false}
                       validateOnChange={false}
                       enableReinitialize={true}
@@ -247,7 +252,7 @@ class UserComponent extends Component {
                       {({ errors, touched, validateField, validateForm }) => (
                         <Form>
                           <div className="form-row mt-5">
-                            <div className="form-group col-md-6">
+                            {/*<div className="form-group col-md-6">
                               <label htmlFor="inputFeedbackId">
                                 FeedbackId*
                               </label>
@@ -262,7 +267,7 @@ class UserComponent extends Component {
                               {errors.fId && (
                                 <div className="text-danger">{errors.fId}</div>
                               )}
-                            </div>
+                              </div>*/}
                             <div className="form-group col-md-6">
                               <label htmlFor="inputUserId">UserId</label>
                               <Field
@@ -309,7 +314,7 @@ class UserComponent extends Component {
                             </div>
                           </div>
                           <button type="submit" className="btn btn-primary">
-                            Save
+                            Send Feedback
                           </button>
                         </Form>
                       )}
