@@ -3,7 +3,10 @@ import { Field, Form, Formik } from "formik";
 import ContactDataService from "../../api/ContactDataService";
 import FeedbackDataService from "../../api/FeedbackDataService";
 import UserDataService from "../../api/UserDataService";
-import { MessageComponent } from "../ExtraComponents";
+import CourseDataService from "../../api/CourseDataService";
+import UserCourseDataService from "../../api/UserCourseDataService";
+import { userId } from "../../api/staticConfig";
+import moment from "moment";
 // function validateValue(value) {
 //   let error;
 //   if (!value) {
@@ -15,6 +18,9 @@ class UserComponent extends Component {
   constructor() {
     super();
     this.state = {
+      allCourses: [],
+      newCourses: [],
+      enrolledCourses: [],
       contactId: "",
       message: "",
       fId: "",
@@ -26,6 +32,7 @@ class UserComponent extends Component {
     };
     this.handleSubmitContactForm = this.handleSubmitContactForm.bind(this);
     this.handleSubmitFeedbackForm = this.handleSubmitFeedbackForm.bind(this);
+    this.handleEnrollCourse = this.handleEnrollCourse.bind(this);
   }
   componentDidMount() {
     UserDataService.getUserByEmail(sessionStorage.getItem("userEmail")).then(
@@ -39,6 +46,32 @@ class UserComponent extends Component {
         });
       }
     );
+    CourseDataService.getAllCourses().then((response) => {
+      this.setState({
+        allCourses: response.data,
+      });
+    });
+    UserCourseDataService.getUserCourseByUserId(userId).then((response) => {
+      this.setState({
+        enrolledCourses: response.data,
+      });
+    });
+  }
+  handleEnrollCourse(courseId, cName, cDesc, cFees) {
+    let userCourse = {};
+    userCourse.courseId = courseId;
+    userCourse.userId = userId;
+    userCourse.cName = cName;
+    userCourse.cDesc = cDesc;
+    userCourse.cFees = cFees;
+    userCourse.timestamp = moment().format();
+    UserCourseDataService.postUserCourse(userCourse).then((response) => {
+      // this.props.history.push({
+      //   pathname: `/user/${userId}`,
+      //   state: { message: "Course Enrolled Successfully!" },
+      // });
+      window.location.reload();
+    });
   }
   handleSubmitContactForm(values) {
     let contact = {};
@@ -71,6 +104,7 @@ class UserComponent extends Component {
       window.location.reload();
     });
   }
+
   render() {
     let contactId = this.state.contactId;
     let message = this.state.message;
@@ -83,7 +117,104 @@ class UserComponent extends Component {
       <div>
         <h4>User Component</h4>
 
-        <div className="container"></div>
+        <div className="container mt-4">
+          <ul className="nav nav-tabs" id="myTab" role="tablist">
+            <li className="nav-item">
+              <a
+                className="nav-link active"
+                id="enrolledCourses-tab"
+                data-toggle="tab"
+                href="#enrolledCourses"
+                role="tab"
+                aria-controls="enrolledCourses"
+                aria-selected="true"
+              >
+                Enrolled Courses
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                id="newCourses-tab"
+                data-toggle="tab"
+                href="#newCourses"
+                role="tab"
+                aria-controls="newCourses"
+                aria-selected="false"
+              >
+                New Courses
+              </a>
+            </li>
+          </ul>
+          <div className="tab-content mt-4" id="myTabContent">
+            <div
+              className="tab-pane fade show active"
+              id="enrolledCourses"
+              role="tabpanel"
+              aria-labelledby="enrolledCourses-tab"
+            >
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Fees</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.enrolledCourses.map((course) => (
+                    <tr key={course.courseId}>
+                      <td>{course.cName}</td>
+                      <td>{course.cDesc}</td>
+                      <td>{course.cFees}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div
+              className="tab-pane fade show"
+              id="newCourses"
+              role="tabpanel"
+              aria-labelledby="newCourses-tab"
+            >
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Fees</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.allCourses.map((course) => (
+                    <tr key={course.courseId}>
+                      <td>{course.cName}</td>
+                      <td>{course.cDesc}</td>
+                      <td>{course.cFees}</td>
+                      <td>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() =>
+                            this.handleEnrollCourse(
+                              course.courseId,
+                              course.cName,
+                              course.cDesc,
+                              course.cFees
+                            )
+                          }
+                        >
+                          Enroll
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
         {/* Contact Model  */}
         <div
           className="modal fade"

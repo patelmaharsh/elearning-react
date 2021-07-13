@@ -4,7 +4,6 @@ import UserDataService from "../../api/UserDataService.js";
 import { Field, Form, Formik } from "formik";
 import ContactDataService from "../../api/ContactDataService";
 import FeedbackDataService from "../../api/FeedbackDataService";
-import { MessageComponent } from "../ExtraComponents";
 function validateValue(value) {
   let error;
   if (!value) {

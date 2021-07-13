@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import AuthenticationService from "../api/AuthenticationService";
 import { userId } from "../api/staticConfig";
-import { MessageComponent } from "./ExtraComponents";
 class HomeComponent extends Component {
   componentDidMount() {
     if (AuthenticationService.isUserUser()) {
