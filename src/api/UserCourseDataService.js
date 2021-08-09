@@ -7,6 +7,9 @@ class UserCourseDataService {
   postUserCourse(userCourse) {
     return axios.post(`${URL}/usercourse`, userCourse);
   }
+  getAllNewCourses(userId){
+    return axios.get(`${URL}/courses/${userId}`);
+  }
 }
 
 export default new UserCourseDataService();

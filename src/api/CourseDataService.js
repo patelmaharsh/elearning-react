@@ -7,5 +7,6 @@ class CourseDataService {
   postCourse(course) {
     return axios.post(`${URL}/courses`, course);
   }
+  
 }
 export default new CourseDataService();

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AuthenticationService from "../api/AuthenticationService";
+import AboutComponent from "./AboutComponent";
 import AdminComponent from "./admin/AdminComponent";
 import AdminLoginComponent from "./admin/AdminLoginComponent";
 import AuthenticatedAdminRoutes from "./AuthenticatedAdminRoutes";
 import AuthenticatedUserRoutes from "./AuthenticatedUserRoutes";
 import ErrorComponent from "./ErrorComponent";
-import { ExtraFooterComponent, ExtraHeaderComponent } from "./ExtraComponents";
 import FooterComponent from "./FooterComponent";
 import HeaderComponent from "./HeaderComponent";
 import HomeComponent from "./HomeComponent";
@@ -19,9 +19,12 @@ class ElearningComponent extends Component {
     return (
       <Router>
         <HeaderComponent />
-        <ExtraHeaderComponent />
+        
+        <div className="extra-space">
         <Switch>
           <Route exact path="/" component={HomeComponent}></Route>
+          {!AuthenticationService.isUserLoggedIn() && (<Route exact path="/about" component={AboutComponent}></Route>)}
+          
           {!AuthenticationService.isUserLoggedIn() && (
             <Route
               exact
@@ -56,7 +59,8 @@ class ElearningComponent extends Component {
           ></AuthenticatedUserRoutes>
           <Route component={ErrorComponent}></Route>
         </Switch>
-        <ExtraFooterComponent />
+        </div>
+        
         <FooterComponent />
       </Router>
     );

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 class FooterComponent extends Component {
   render() {
     return (
-      <div className="row footer bg-dark no-gutters">
+      <div className="row footer bg-light no-gutters">
         <span className="span-center">Copyright 2021 © Maharsh Patel</span>
       </div>
     );

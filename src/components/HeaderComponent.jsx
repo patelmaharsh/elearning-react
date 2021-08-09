@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
 import AuthenticationService from "../api/AuthenticationService";
-class HeaderComponent extends Component {
-  constructor() {
-    super();
-    this.state = {};
-    this.handleLogout = this.handleLogout.bind(this);
-  }
-  handleLogout() {
+function HeaderComponent() {
+  const history = useHistory();
+  const handleLogout = () => {
     AuthenticationService.logout();
+    history.push({
+      pathname: "/",
+      state: {message: "Logout Successful!"}
+    });
     window.location.reload();
   }
-  render() {
+  
     return (
-      <div className="header no-gutters">
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+      <div className=" no-gutters active" id="header">
+        <nav className="navbar navbar-expand-md navbar-light bg-light">
           <button
             className="navbar-toggler"
             type="button"
@@ -28,7 +28,7 @@ class HeaderComponent extends Component {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <div>
-              <Link className="navbar-brand" to="/">
+              <Link className="navbar-brand " id="text-brand" to="/">
                 E-Learning
               </Link>
             </div>
@@ -46,7 +46,7 @@ class HeaderComponent extends Component {
                 <li>
                   <button
                     type="button"
-                    className="btn btn-dark nav-link"
+                    className="btn btn-light nav-link"
                     data-toggle="modal"
                     data-target="#contactModel"
                   >
@@ -58,7 +58,7 @@ class HeaderComponent extends Component {
                 <li>
                   <button
                     type="button"
-                    className="btn btn-dark nav-link"
+                    className="btn btn-light nav-link"
                     data-toggle="modal"
                     data-target="#feedbackModel"
                   >
@@ -70,7 +70,7 @@ class HeaderComponent extends Component {
                 <li>
                   <button
                     type="button"
-                    className="btn btn-dark nav-link"
+                    className="btn btn-light nav-link"
                     data-toggle="modal"
                     data-target="#courseModel"
                   >
@@ -93,16 +93,22 @@ class HeaderComponent extends Component {
                   </Link>
                 </li>
               )}
+              {!AuthenticationService.isUserLoggedIn() && (
+                <li>
+                  <Link className="nav-link" to="/about">
+                    About
+                  </Link>
+                </li>
+              )}
 
               {AuthenticationService.isUserLoggedIn() && (
                 <li>
-                  <Link
-                    className="btn btn-dark nav-link"
-                    onClick={this.handleLogout}
-                    to={{ pathname: "/", state: { message: "logout success" } }}
+                  <button
+                    className="btn btn-light nav-link"
+                    onClick={handleLogout}
                   >
                     Logout
-                  </Link>
+                  </button>
                 </li>
               )}
             </ul>
@@ -110,6 +116,6 @@ class HeaderComponent extends Component {
         </nav>
       </div>
     );
-  }
+
 }
 export default HeaderComponent;

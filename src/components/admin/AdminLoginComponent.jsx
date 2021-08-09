@@ -30,7 +30,7 @@ class AdminLoginComponent extends Component {
           );
           this.props.history.push({
             pathname: `/admin`,
-            state: { message: "Login SUccess!" },
+            state: { message: "Login Successful!" },
           });
           window.location.reload();
         } else {
@@ -52,7 +52,7 @@ class AdminLoginComponent extends Component {
       <div>
         <h4>Admin Login</h4>
         {this.state.message && (
-          <div class="alert alert-warning" role="alert">
+          <div className="alert alert-warning" role="alert">
             {this.state.message}
           </div>
         )}

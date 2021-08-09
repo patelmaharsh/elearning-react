@@ -1,4 +1,4 @@
-export const URL = "https://spring-boot-elearning-app.herokuapp.com";
+export const URL = "http://localhost:8080";
 export const userId = sessionStorage.getItem("userId");
 export const userEmail = sessionStorage.getItem("userEmail");
 export const userRole = sessionStorage.getItem("userRole");

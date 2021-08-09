@@ -1,8 +1,9 @@
+:root{
+  --primary-color: rgb(204, 5, 64);
+}
+body > #header{position:fixed;}
 .App {
   text-align: center;
-}
-.extra-header-space {
-  height: 70px;
 }
 .footer {
   position: fixed;
@@ -12,18 +13,40 @@
   text-align: center;
   z-index: 10;
 }
-.extra-footer-space {
-  height: 50px;
+#text-brand{
+  color: var(--primary-color);
+  font-family: 'Brush Script MT', cursive;
+  font-size: 35px;
+}
+.focus p::first-letter{
+  font-size: 150%;
+  color: var(--primary-color);
 }
 .span-center {
-  color: rgb(209, 209, 209);
+  color: rgb(80, 80, 80);
   margin: auto;
 }
 .login-form {
   margin: auto;
 }
-.header {
+#header {
   position: fixed;
   width: 100%;
   z-index: 100;
+  overflow: auto;
+  transition: all 0.5s linear;
+}
+#header.active {
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);   
+}
+.about{
+  width: 60%;
+  margin: auto;
+}
+.about-carousel{
+  height: 70vh;
+}
+.extra-space{
+  padding-top: 90px;
+  padding-bottom: 50px;
 }

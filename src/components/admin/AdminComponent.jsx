@@ -57,6 +57,10 @@ class AdminComponent extends Component {
     course.cFees = values.cFees;
     course.cResource = values.cResource;
     CourseDataService.postCourse(course).then((response) => {
+      this.props.history.push({
+        pathname: "/admin",
+        state: {message: "Course Added Successfully!"}
+      })
       window.location.reload();
     });
   }
@@ -70,7 +74,7 @@ class AdminComponent extends Component {
     return (
       <div>
         <h4>Admin Component</h4>
-
+        <div className="container" id="div-message">{this.props.location.state && (<div className="alert alert-warning">{this.props.location.state.message}</div>)}</div>
         <div className="container mt-4">
           <ul className="nav nav-tabs" id="myTab" role="tablist">
             <li className="nav-item">

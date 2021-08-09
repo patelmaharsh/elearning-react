@@ -30,7 +30,7 @@ class UserLoginComponent extends Component {
           );
           this.props.history.push({
             pathname: `/user/${response.data.userId}`,
-            state: { message: "Login SUccess!" },
+            state: { message: "Login Successful!" },
           });
           window.location.reload();
         } else {
@@ -52,7 +52,7 @@ class UserLoginComponent extends Component {
       <div>
         <h4>User Login</h4>
         {this.state.message && (
-          <div class="alert alert-warning" role="alert">
+          <div className="alert alert-warning" role="alert">
             {this.state.message}
           </div>
         )}

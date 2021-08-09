@@ -37,7 +37,7 @@ class RegisterUserComponent extends Component {
     UserDataService.postUser(user).then((response) => {
       this.props.history.push({
         pathname: "/",
-        state: { message: "Registered!" },
+        state: { message: "Registered Successfully!" },
       });
     });
   }

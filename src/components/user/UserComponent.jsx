@@ -3,7 +3,6 @@ import { Field, Form, Formik } from "formik";
 import ContactDataService from "../../api/ContactDataService";
 import FeedbackDataService from "../../api/FeedbackDataService";
 import UserDataService from "../../api/UserDataService";
-import CourseDataService from "../../api/CourseDataService";
 import UserCourseDataService from "../../api/UserCourseDataService";
 import { userId } from "../../api/staticConfig";
 import moment from "moment";
@@ -46,9 +45,9 @@ class UserComponent extends Component {
         });
       }
     );
-    CourseDataService.getAllCourses().then((response) => {
+    UserCourseDataService.getAllNewCourses(userId).then((response) => {
       this.setState({
-        allCourses: response.data,
+        newCourses: response.data,
       });
     });
     UserCourseDataService.getUserCourseByUserId(userId).then((response) => {
@@ -66,10 +65,6 @@ class UserComponent extends Component {
     userCourse.cFees = cFees;
     userCourse.timestamp = moment().format();
     UserCourseDataService.postUserCourse(userCourse).then((response) => {
-      // this.props.history.push({
-      //   pathname: `/user/${userId}`,
-      //   state: { message: "Course Enrolled Successfully!" },
-      // });
       window.location.reload();
     });
   }
@@ -113,10 +108,12 @@ class UserComponent extends Component {
     let userId = this.state.userId;
     let name = this.state.name;
     let email = this.state.email;
+    
     return (
       <div>
-        <h4>User Component</h4>
-
+        <h4>Welcome {this.state.name}</h4>
+        <div className="container" id="div-message">{this.props.location.state && (<div className="alert alert-warning">{this.props.location.state.message}</div>)}</div>
+        
         <div className="container mt-4">
           <ul className="nav nav-tabs" id="myTab" role="tablist">
             <li className="nav-item">
@@ -146,31 +143,27 @@ class UserComponent extends Component {
               </a>
             </li>
           </ul>
-          <div className="tab-content mt-4" id="myTabContent">
+          <div className="tab-content " id="myTabContent">
             <div
               className="tab-pane fade show active"
               id="enrolledCourses"
               role="tabpanel"
               aria-labelledby="enrolledCourses-tab"
             >
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Fees</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.enrolledCourses.map((course) => (
-                    <tr key={course.courseId}>
-                      <td>{course.cName}</td>
-                      <td>{course.cDesc}</td>
-                      <td>{course.cFees}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="row">
+                {this.state.enrolledCourses.map((course)=>(
+                    <div className="col-md-4 mt-5" key={course.courseId}>
+                      <div className="card">
+                        <input type="image" alt="This is descriptive!" />
+                        {/* <img className="card-img-top" src="" alt={"demo image"} /> */}
+                        <div className="card-body">
+                          <h5 className="card-title">{course.cName}</h5>
+                          <p className="card-text">{course.cDesc}</p>
+                        </div>
+                      </div>
+                    </div>
+                ))}
+              </div>
             </div>
             <div
               className="tab-pane fade show"
@@ -178,40 +171,28 @@ class UserComponent extends Component {
               role="tabpanel"
               aria-labelledby="newCourses-tab"
             >
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Fees</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.allCourses.map((course) => (
-                    <tr key={course.courseId}>
-                      <td>{course.cName}</td>
-                      <td>{course.cDesc}</td>
-                      <td>{course.cFees}</td>
-                      <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() =>
+              <div className="row">
+                {this.state.newCourses.map((course)=>(
+                    <div className="col-md-4 mt-5" key={course.courseId}>
+                      <div className="card">
+                        <input type="image" alt="This is descriptive!" />
+                        {/* <img className="card-img-top" src="" alt="demo image" /> */}
+                        <div className="card-body">
+                          <h5 className="card-title">{course.cName} - {course.cFees}</h5>
+                          <p className="card-text">{course.cDesc}</p>
+                          <button className="btn btn-primary" onClick={() =>
                             this.handleEnrollCourse(
                               course.courseId,
                               course.cName,
                               course.cDesc,
                               course.cFees
                             )
-                          }
-                        >
-                          Enroll
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                          }>Enroll</button>
+                        </div>
+                      </div>
+                    </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
