@@ -19,48 +19,50 @@ class ElearningComponent extends Component {
     return (
       <Router>
         <HeaderComponent />
-        
-        <div className="extra-space">
-        <Switch>
-          <Route exact path="/" component={HomeComponent}></Route>
-          {!AuthenticationService.isUserLoggedIn() && (<Route exact path="/about" component={AboutComponent}></Route>)}
-          
-          {!AuthenticationService.isUserLoggedIn() && (
-            <Route
-              exact
-              path="/registeruser"
-              component={RegisterUserComponent}
-            ></Route>
-          )}
-          {!AuthenticationService.isUserLoggedIn() && (
-            <Route
-              exact
-              path="/userlogin"
-              component={UserLoginComponent}
-            ></Route>
-          )}
-          {!AuthenticationService.isUserLoggedIn() && (
-            <Route
-              exact
-              path="/adminlogin"
-              component={AdminLoginComponent}
-            ></Route>
-          )}
 
-          <AuthenticatedAdminRoutes
-            exact
-            path="/admin"
-            component={AdminComponent}
-          ></AuthenticatedAdminRoutes>
-          <AuthenticatedUserRoutes
-            exact
-            path="/user/:id"
-            component={UserComponent}
-          ></AuthenticatedUserRoutes>
-          <Route component={ErrorComponent}></Route>
-        </Switch>
+        <div className="extra-space">
+          <Switch>
+            <Route exact path="/" component={HomeComponent}></Route>
+            {!AuthenticationService.isUserLoggedIn() && (
+              <Route exact path="/about" component={AboutComponent}></Route>
+            )}
+
+            {!AuthenticationService.isUserLoggedIn() && (
+              <Route
+                exact
+                path="/registeruser"
+                component={RegisterUserComponent}
+              ></Route>
+            )}
+            {!AuthenticationService.isUserLoggedIn() && (
+              <Route
+                exact
+                path="/userlogin"
+                component={UserLoginComponent}
+              ></Route>
+            )}
+            {!AuthenticationService.isUserLoggedIn() && (
+              <Route
+                exact
+                path="/adminlogin"
+                component={AdminLoginComponent}
+              ></Route>
+            )}
+
+            <AuthenticatedAdminRoutes
+              exact
+              path="/admin"
+              component={AdminComponent}
+            ></AuthenticatedAdminRoutes>
+            <AuthenticatedUserRoutes
+              exact
+              path="/user/:id"
+              component={UserComponent}
+            ></AuthenticatedUserRoutes>
+            <Route component={ErrorComponent}></Route>
+          </Switch>
         </div>
-        
+
         <FooterComponent />
       </Router>
     );
